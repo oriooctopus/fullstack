@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Architecture Diagrams</title>
+  <style>
+    body { background: #1a1a2e; color: #eee; font-family: system-ui; padding: 2rem; }
+    h2 { color: #e8744f; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+    .mermaid { background: #16213e; border-radius: 12px; padding: 2rem; margin: 1rem 0 3rem; }
+  </style>
+</head>
+<body>
+
+<h2>1. Request Flow (Top-Down)</h2>
+<div class="mermaid">
+graph TD
+    Client["Client Request"]
+    GQL["GraphQL + RBAC<br/><i>Scala api-server</i>"]
+    Handler["Go gRPC Handler<br/><i>Business logic, validation</i>"]
+    DAO["DAO Layer<br/><i>Interface + SQLBoiler impl</i>"]
+    DB[("PostgreSQL<br/><i>Per-customer DB</i>")]
+
+    Client -->|"GraphQL query/mutation"| GQL
+    GQL -->|"gRPC call"| Handler
+    Handler -->|"DAO interface"| DAO
+    DAO -->|"SQL queries"| DB
+
+    style Client fill:#4a90d9,stroke:#2c5f8a,color:#fff
+    style GQL fill:#e8744f,stroke:#b5522d,color:#fff
+    style Handler fill:#50b87a,stroke:#358a56,color:#fff
+    style DAO fill:#f5a623,stroke:#c07d12,color:#fff
+    style DB fill:#9b6fcb,stroke:#6d4a94,color:#fff
+</div>
+
+<h2>2. Build Order (Left-Right)</h2>
+<div class="mermaid">
+graph LR
+    M["1. DB Migration<br/><i>migrator DSL</i>"]
+    S["2. SQLBoiler<br/><i>model generation</i>"]
+    D["3. DAO<br/><i>interface + impl</i>"]
+    P["4. Proto<br/><i>RPC + messages</i>"]
+    H["5. Go Handler<br/><i>logic + validation</i>"]
+    G["6. GraphQL + RBAC<br/><i>Scala api-server</i>"]
+
+    M --> S --> D --> P --> H --> G
+
+    style M fill:#9b6fcb,stroke:#6d4a94,color:#fff
+    style S fill:#9b6fcb,stroke:#6d4a94,color:#fff
+    style D fill:#f5a623,stroke:#c07d12,color:#fff
+    style P fill:#50b87a,stroke:#358a56,color:#fff
+    style H fill:#50b87a,stroke:#358a56,color:#fff
+    style G fill:#e8744f,stroke:#b5522d,color:#fff
+</div>
+
+<h2>3. Detailed Architecture with File Paths</h2>
+<div class="mermaid">
+graph TD
+    subgraph scala ["Scala api-server"]
+        GQL["GraphQL Schema<br/><code>schema-internal.graphql</code>"]
+        RBAC["RBAC Policies<br/><code>services/&lt;svc&gt;/rbac/</code>"]
+        Resolver["Resolvers<br/><code>apps/&lt;svc&gt;/schema/</code>"]
+        GlobalAPI["Global API Registration<br/><code>global-api/schema/schema.go</code>"]
+    end
+
+    subgraph gohandler ["Go gRPC Service"]
+        Proto["Proto Definition<br/><code>&lt;svc&gt;/proto/&lt;svc&gt;.proto</code>"]
+        Validator["Request Validator<br/><code>service/validator/rpc/</code>"]
+        HandlerImpl["Handler Implementation<br/><code>service/svc/</code>"]
+        Converter["Proto Converters<br/><code>service/converter/</code>"]
+    end
+
+    subgraph data ["Data Layer"]
+        DAOInt["DAO Interface<br/><code>internal/&lt;component&gt;dao/</code>"]
+        DAOImpl["DAO Implementation<br/><i>SQLBoiler-backed</i>"]
+        Models["SQLBoiler Models<br/><code>db-models/customer/</code>"]
+        Migration["DB Migration<br/><code>migrator/schema/m0XXX-*.go</code>"]
+    end
+
+    DB[("PostgreSQL")]
+
+    Resolver --> HandlerImpl
+    GQL --> Resolver
+    RBAC --> Resolver
+    GlobalAPI --> GQL
+
+    HandlerImpl --> Validator
+    HandlerImpl --> Converter
+    HandlerImpl --> DAOInt
+    Proto -.->|"codegen"| HandlerImpl
+
+    DAOInt --> DAOImpl
+    DAOImpl --> Models
+    Models -.->|"generated from"| Migration
+    DAOImpl --> DB
+
+    style scala fill:#2d2d2d,stroke:#e8744f,color:#fff
+    style gohandler fill:#2d2d2d,stroke:#50b87a,color:#fff
+    style data fill:#2d2d2d,stroke:#f5a623,color:#fff
+    style DB fill:#9b6fcb,stroke:#6d4a94,color:#fff
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ theme: 'dark', startOnLoad: true });
+</script>
+</body>
+</html>
