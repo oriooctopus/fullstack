@@ -162,13 +162,17 @@ Builds and deploys to a dev environment. Only rebuilds the services your changes
 Investigates bugs across layers. Give it a description or JIRA ticket, it traces through the code to identify root causes.
 
 ### `/implementation-explainer`
-Walks you through a PR or implementation plan you generated with Claude Code. Socratic Q&A — asks you questions about what was built and why, so you actually understand the code you're shipping.
+Socratic Q&A — asks you questions about what was built and why, so you actually understand the code you're shipping.
+
+---
+
+# Other Useful Skills (cont.)
 
 ### `/code-walk`
 Fast code navigation using Universal Ctags. Find definitions, trace callers, list struct members — roughly 4x faster than grep.
 
 ### `/polaris-codegen`
-Runs proto codegen (Go stubs, Python SDK, etc.). The fullstack-orchestrator calls this automatically, but you can run it standalone if you're iterating on proto changes outside the orchestrator.
+Runs proto codegen (Go stubs, Python SDK, etc.). The orchestrator calls this automatically, but you can run it standalone too.
 
 ---
 

@@ -97,3 +97,5 @@ And remember — you've seen backend devs ship questionable frontend code early 
 ## Other Resources
 
 Here are some Confluence pages worth bookmarking. There's an end-to-end flow diagram that shows the full database request path including ProxySQL — useful for understanding what happens under the hood. There's also a step-by-step guide for adding basic APIs in Polaris — covers migration, proto, Go service, Scala GraphQL, the whole chain. And there's a page on getting access to a GCP dev deployment if you haven't set that up yet.
+
+And a big thank you to Logan for helping put this together.
