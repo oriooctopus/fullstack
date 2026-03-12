@@ -24,7 +24,7 @@ This is the same process in the other direction. Frontend engineers picking up b
 
 Full stack here is not React and Node. A request comes in from the client — could be the UI, an SDK, or a direct API consumer. It hits our GraphQL API in the Scala api-server. That layer handles schema validation, RBAC checks, and routes the request through a resolver and DAL down to the Go gRPC handler. The handler is where business logic lives — validation, conversion, all of that. It talks to the DAO layer, which is an interface over SQLBoiler, and that ultimately hits a per-customer PostgreSQL database.
 
-Six layers, three languages, dozens of files. Every new feature needs to wire through all of them. It's not conceptually hard, but there's a lot of surface area.
+Six layers, three languages, dozens of files. Every new feature needs to wire through all of them. It's not conceptually hard, but there's a lot of surface area. If you hover over the nodes in this diagram there are tooltips with more detail on each layer.
 
 ---
 
