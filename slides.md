@@ -1,6 +1,7 @@
 ---
 theme: default
 title: Full Stack Engineering at Rubrik
+colorSchema: dark
 ---
 
 # Full Stack Engineering at Rubrik
@@ -24,7 +25,6 @@ Claude has added an abstraction layer to our work. Working in foreign domains is
 - **Specialist to T-shaped**: the trend is toward engineers who deliver features end-to-end
 - **Own the product**: you don't wait on a backend engineer because you *are* the backend engineer
 - **Better product sense**: you understand the full experience, not just a mock handed to you
-- **It's a process**: backend devs started doing frontend and weren't great at first. They got better. Same applies here.
 
 ---
 
@@ -161,8 +161,14 @@ Builds and deploys to a dev environment. Only rebuilds the services your changes
 ### `/bug-hunt`
 Investigates bugs across layers. Give it a description or JIRA ticket, it traces through the code to identify root causes.
 
+### `/implementation-explainer`
+Walks you through a PR or implementation plan you generated with Claude Code. Socratic Q&A — asks you questions about what was built and why, so you actually understand the code you're shipping.
+
 ### `/code-walk`
 Fast code navigation using Universal Ctags. Find definitions, trace callers, list struct members — roughly 4x faster than grep.
+
+### `/polaris-codegen`
+Runs proto codegen (Go stubs, Python SDK, etc.). The fullstack-orchestrator calls this automatically, but you can run it standalone if you're iterating on proto changes outside the orchestrator.
 
 ---
 
@@ -184,6 +190,8 @@ Server-side latency, error rates, throughput. Same idea as the browser Network t
 - **Don't bite off more than you can chew**
 - **Use code review**
 - **Fullstack knowledge improves your frontend code**
+- **Multitask**: the skill is slow and deliberate — run it in a separate worktree and keep doing frontend work in your main branch
+- **It's a process**: backend devs started doing frontend and weren't great at first. They got better. Same applies here.
 
 ---
 
@@ -195,9 +203,3 @@ Server-side latency, error rates, throughput. Same idea as the browser Network t
 
 ### Deployment Access
 - [Getting Access to a Polaris GCP Dev Deployment](https://rubrik.atlassian.net/wiki/spaces/SPARK/pages/2444428588) — how to get and verify access to dev GCP projects
-
----
-
-# Closing
-
-You've probably seen backend devs ship questionable frontend code early on, then steadily improve. That's what your learning curve will look like too.
