@@ -23,14 +23,14 @@ What we'll cover:
 Claude has added an abstraction layer to our work. Working in foreign domains is genuinely easier now.
 
 - **Specialist to T-shaped**: the trend is toward engineers who deliver features end-to-end
-- **Own the product**: you don't wait on a backend engineer because you *are* the backend engineer
+- **Own the product**: you don't wait on a backend engineer because you _are_ the backend engineer
 - **Better product sense**: you understand the full experience, not just a mock handed to you
 
 ---
 
 # What "Full Stack" Means at Rubrik
 
-A client request flows through six layers, three languages, and dozens of files.
+Hover over the text to see a tooltip explaining what it does.
 
 <MermaidTooltips :tooltips="{
   Client: 'The caller — Polaris UI, Python SDK, or direct API consumer.',
@@ -131,22 +131,24 @@ graph LR
 
     TM & TQ & TQC --> S2["2. Proto +\ncodegen"]
 
-    S2 --> dao_skill --> S5["4. Go\nhandler"] --> rpc_skill --> S6["5. Wire Scala\n+ GraphQL"] --> S7["6. Deploy"]
+    S2 -.-> dao_skill -.-> S5["4. Go\nhandler"] -.-> rpc_skill
+    S2 --> S6["5. Wire Scala\n+ GraphQL"] --> S7["6. Deploy"]
+    rpc_skill --> S6
 
-    subgraph dao_skill ["3. add-dao-crud sub-skill"]
+    subgraph dao_skill ["3. add-dao-crud (optional)"]
         direction TB
         DAO_PAT["dao-patterns.md"] ~~~ DAO_TEST["dao-test-patterns.md"]
     end
 
-    subgraph rpc_skill ["add-rpc-handler sub-skill"]
+    subgraph rpc_skill ["add-rpc-handler (optional)"]
         direction TB
         RPC_DAO["handler-dao.md"] ~~~ RPC_CONV["handler-proto-conversion.md"] ~~~ RPC_TEST["handler-tests.md"]
     end
 
     style User fill:#4a90d9,stroke:#2c5f8a,color:#fff
     style Route fill:#e8744f,stroke:#b5522d,color:#fff
-    style dao_skill fill:#2d2d2d,stroke:#f5a623,color:#fff
-    style rpc_skill fill:#2d2d2d,stroke:#50b87a,color:#fff
+    style dao_skill fill:#2d2d2d,stroke:#f5a623,color:#fff,stroke-dasharray: 5 5
+    style rpc_skill fill:#2d2d2d,stroke:#50b87a,color:#fff,stroke-dasharray: 5 5
 ```
 
 </Zoom>
@@ -156,12 +158,15 @@ graph LR
 # Other Useful Skills
 
 ### `/deployment`
+
 Builds and deploys to a dev environment. Only rebuilds the services your changes actually touch.
 
 ### `/bug-hunt`
+
 Investigates bugs across layers. Give it a description or JIRA ticket, it traces through the code to identify root causes.
 
 ### `/implementation-explainer`
+
 Socratic Q&A — asks you questions about what was built and why, so you actually understand the code you're shipping.
 
 ---
@@ -169,9 +174,11 @@ Socratic Q&A — asks you questions about what was built and why, so you actuall
 # Other Useful Skills (cont.)
 
 ### `/code-walk`
+
 Fast code navigation using Universal Ctags. Find definitions, trace callers, list struct members — roughly 4x faster than grep.
 
 ### `/polaris-codegen`
+
 Runs proto codegen (Go stubs, Python SDK, etc.). The orchestrator calls this automatically, but you can run it standalone too.
 
 ---
@@ -179,9 +186,11 @@ Runs proto codegen (Go stubs, Python SDK, etc.). The orchestrator calls this aut
 # Debugging Tools
 
 ### Logz MCP — your backend console
+
 Think of it like `console.log`, but for every service at once. Query logs directly from Claude Code — Lucene syntax, filter by level, time range, deployment, component.
 
 ### Chronosphere MCP — your backend Network tab
+
 Server-side latency, error rates, throughput. Same idea as the browser Network tab, but from the server's perspective across all services.
 
 ---
@@ -202,8 +211,10 @@ Server-side latency, error rates, throughput. Same idea as the browser Network t
 # Other Resources
 
 ### Architecture & Flow
+
 - [Polaris Database End-to-End Flow Diagram](https://rubrik.atlassian.net/wiki/spaces/SPARK/pages/2319908950) — full DB request path, including ProxySQL
 - [Guide to Adding Basic APIs in Polaris](https://rubrik.atlassian.net/wiki/spaces/SPARK/pages/1370226689) — migration, proto, Go service, Scala GraphQL
 
 ### Deployment Access
+
 - [Getting Access to a Polaris GCP Dev Deployment](https://rubrik.atlassian.net/wiki/spaces/SPARK/pages/2444428588) — how to get and verify access to dev GCP projects

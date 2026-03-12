@@ -36,11 +36,11 @@ The skill is called `fullstack-orchestrator`. It's a one-stop shop.
 
 You describe what you want to build and it plans the work with you. It asks clarifying questions, then routes to the right sub-skill — `add-dao-crud` for the data access layer, `add-rpc-handler` for the Go handler logic, `add-db-migration` for schema changes. Each sub-skill encapsulates its own reference patterns and conventions, so Claude's context isn't getting flooded with stuff it doesn't need for the current step. That's the main reason we split it up this way — avoiding context bloat.
 
-You interact with one skill. You don't need to know which sub-skills exist or invoke them manually — the orchestrator figures out what's needed. New table required? It scaffolds the DAO. Table already exists? Skips that step.
+You interact with one skill. You don't need to know which sub-skills exist or invoke them manually — the orchestrator figures out what's needed. And the deeper sub-skills are optional. If you're adding a field to an existing API, you don't need the DAO or RPC handler steps — the orchestrator skips them. New table required? It scaffolds the DAO. New Go handler? It invokes that sub-skill. Existing table, existing handler? It skips straight to wiring the Scala and GraphQL layers. It only loads what your specific change actually needs.
 
-This is an MVP, A rough draft. It's going to need a lot of improvement from all of you to get it to a place where full stack development is as easy as possible. Think of all the work we've had to do on the frontend side to make development smooth — the skills, the patterns, the conventions we've built up. That hasn't really happened on the backend side yet. This is the starting point.
+This is an MVP. A rough draft. It's going to need a lot of improvement from all of you to get it to a place where full stack development is as easy as possible. Think of all the work we've had to do on the frontend side to make development smooth — the skills, the patterns, the conventions we've built up. That hasn't really happened on the backend side yet. This is the starting point.
 
-The detailed diagram shows the full seven-step flow: gather inputs, pick the right template, define the proto, run codegen, scaffold the DAO, add the handler, wire Scala and GraphQL, then deploy to your dev instance.
+The detailed diagram shows the full flow. The dashed lines are the optional steps — DAO and RPC handler — that only run when your feature actually needs them. The solid path is what always happens: gather inputs, pick a template, proto and codegen, wire Scala and GraphQL, deploy.
 
 ---
 
